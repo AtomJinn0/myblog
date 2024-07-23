@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\PostController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
