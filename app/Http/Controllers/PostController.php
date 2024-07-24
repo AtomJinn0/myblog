@@ -56,23 +56,39 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('posts.edit', compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
-        //
-    }
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+        ]);
 
+        if (Auth::id() != $post->user_id) {
+            abort(403);
+        }
+
+        $post->update($request->all());
+
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
+    }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        if (Auth::id() != $post->user_id) {
+            abort(403);
+        }
+
+        $post->delete();
+
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
     }
 
 }
